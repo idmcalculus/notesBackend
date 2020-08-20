@@ -1,7 +1,7 @@
-GET http://localhost:3006/api/notes
+GET https://calc-notes.herokuapp.com/api/notes
 
 ###
-POST http://localhost:3006/api/notes
+POST https://calc-notes.herokuapp.com/api/notes
 Content-Type: application/json
 
 {
@@ -10,4 +10,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3006/api/notes/2
+DELETE https://calc-notes.herokuapp.com/api/notes/2
