@@ -1,0 +1,13 @@
+GET http://localhost:3006/api/notes
+
+###
+POST http://localhost:3006/api/notes
+Content-Type: application/json
+
+{
+    "content": "I love rest client",
+    "important": true
+}
+
+###
+DELETE http://localhost:3006/api/notes/2
