@@ -11,3 +11,6 @@ Content-Type: application/json
 
 ###
 DELETE https://calc-notes.herokuapp.com/api/notes/2
+
+###
+GET  http://localhost:3006/api/notes
