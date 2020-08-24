@@ -1,27 +1,4 @@
 const mongoose = require('mongoose')
-const { url } = require('../utils/config')
-const { info, errorlog } = require('../utils/logger')
-
-
-
-mongoose.set('useFindAndModify', false)
-mongoose.set('useNewUrlParser', true)
-mongoose.set('useUnifiedTopology', true)
-
-info('connecting to', url)
-
-const mongoClient = async () => {
-  try {
-    const connected = await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-    if (connected) {
-      info('connected to MongoDB')
-    }
-  } catch (error) {
-    errorlog('error connecting to MongoDB:', error.message)
-  }
-}
-
-mongoClient()
 
 const noteSchema = new mongoose.Schema({
   content: {

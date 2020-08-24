@@ -16,7 +16,7 @@ DELETE https://calc-notes.herokuapp.com/api/notes/2
 GET  http://localhost:3006/api/notes
 
 ###
-DELETE http://localhost:3006/api/notes/
+DELETE http://localhost:3006/api/notes/5f43bfb9aa750834f89f6582
 
 ###
 PUT http://localhost:3006/api/notes/5f400fa2c4e120d0dbafc09a
