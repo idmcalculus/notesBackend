@@ -4,6 +4,7 @@
 const express = require('express');
 const cors = require('cors');
 const Note = require('./models/note');
+const errorHandler = require('./middlewares/handleError');
 
 const app = express();
 
@@ -20,34 +21,73 @@ app.get('/api/notes', async (req, res) => {
 	res.json(notes);
 });
 
-app.get('/api/notes/:id', async (request, response) => {
-	const note = await Note.findById(request.params.id);
-	response.json(note);
+app.get('/api/notes/:id', async (request, response, next) => {
+	try {
+		const note = await Note.findById(request.params.id);
+		if (note) {
+			response.json(note);
+		} else {
+			response.status(404).end();
+		}
+	} catch (error) {
+		next(error);
+	}
 });
 
-app.post('/api/notes', async (request, response) => {
+app.post('/api/notes', async (request, response, next) => {
 	const body = request.body;
   
 	if (body.content === undefined) {
 	  return response.status(400).json({ error: 'content missing' });
 	}
   
-	const note = new Note({
-	  content: body.content,
-	  important: body.important || false,
-	  date: new Date(),
-	});
+	try {
+		const note = new Note({
+			content: body.content,
+			important: body.important || false,
+			date: new Date(),
+		});
+		
+		const savedNote = await note.save();
+		response.json(savedNote.toJSON());
+	} catch (error) {
+		next(error);
+	}
+});
+
+app.put('/api/notes/:id', async (request, response, next) => {
+	const body = await request.body;
   
-	const savedNote = await note.save();
-	response.json(savedNote);
+	const note = {
+	  content: body.content,
+	  important: body.important,
+	};
+  
+	try {
+		const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, { new: true });
+		response.json(updatedNote);
+	} catch(error) {
+		next(error);
+	}
 });
 
-app.delete('/api/notes/:id', (request, response) => {
-	const id = Number(request.params.id);
-	notes = notes.filter(note => note.id !== id);
-
-	response.status(204).end();
+app.delete('/api/notes/:id', async (request, response, next) => {
+	try {
+		const deletedNote = await Note.findByIdAndRemove(request.params.id);
+		if (deletedNote) {
+			response.status(204).end();
+		}
+	} catch (error) {
+		next(error);
+	}
 });
+
+const unknownEndpoint = (request, response) => {
+	response.status(404).send({ error: 'unknown endpoint' });
+}
+
+app.use(errorHandler);
+app.use(unknownEndpoint);
 
 // exports.app = functions.https.onRequest(app);
 

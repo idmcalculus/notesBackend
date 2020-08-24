@@ -5,7 +5,7 @@ POST https://calc-notes.herokuapp.com/api/notes
 Content-Type: application/json
 
 {
-    "content": "I love rest client",
+    "content": "lol",
     "important": true
 }
 
@@ -14,3 +14,24 @@ DELETE https://calc-notes.herokuapp.com/api/notes/2
 
 ###
 GET  http://localhost:3006/api/notes
+
+###
+DELETE http://localhost:3006/api/notes/5f3eef751e68dda55760bdb8
+
+###
+PUT http://localhost:3006/api/notes/5f400fa2c4e120d0dbafc09a
+Content-Type: application/json
+
+{
+    "content": "I love rest client",
+    "important": true
+}
+
+###
+POST http://localhost:3006/api/notes
+Content-Type: application/json
+
+{
+    "content": "lol",
+    "important": true
+}
