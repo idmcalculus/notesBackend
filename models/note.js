@@ -1,26 +1,27 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const mongoose = require('mongoose')
+const { url } = require('../utils/config')
+const { info, errorlog } = require('../utils/logger')
 
-dotenv.config();
 
-const url = process.env.CONNECTION_URL;
 
-console.log('connecting to', url);
+mongoose.set('useFindAndModify', false)
+mongoose.set('useNewUrlParser', true)
+mongoose.set('useUnifiedTopology', true)
+
+info('connecting to', url)
 
 const mongoClient = async () => {
   try {
-    const connected = await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+    const connected = await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     if (connected) {
-      console.log('connected to MongoDB');
+      info('connected to MongoDB')
     }
   } catch (error) {
-    console.log('error connecting to MongoDB:', error.message);
+    errorlog('error connecting to MongoDB:', error.message)
   }
-};
+}
 
-mongoClient();
-
-mongoose.set('useFindAndModify', false);
+mongoClient()
 
 const noteSchema = new mongoose.Schema({
   content: {
@@ -28,19 +29,19 @@ const noteSchema = new mongoose.Schema({
     minlength: 5,
     required: true
   },
-  date: { 
+  date: {
     type: Date,
     required: true
   },
   important: Boolean,
-});
+})
 
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   }
-});
+})
 
-module.exports = mongoose.model('Note', noteSchema);
+module.exports = mongoose.model('Note', noteSchema)

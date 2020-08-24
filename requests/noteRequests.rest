@@ -16,7 +16,7 @@ DELETE https://calc-notes.herokuapp.com/api/notes/2
 GET  http://localhost:3006/api/notes
 
 ###
-DELETE http://localhost:3006/api/notes/5f3eef751e68dda55760bdb8
+DELETE http://localhost:3006/api/notes/
 
 ###
 PUT http://localhost:3006/api/notes/5f400fa2c4e120d0dbafc09a
@@ -32,6 +32,6 @@ POST http://localhost:3006/api/notes
 Content-Type: application/json
 
 {
-    "content": "lol",
+    "content": "Fullstack Helsinki is an awesome course",
     "important": true
 }

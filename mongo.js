@@ -1,25 +1,24 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const mongoose = require('mongoose')
+require('dotenv').config()
+const { info, error } = require('./utils/logger')
 
-dotenv.config();
+const url = process.env.CONNECTION_URL
 
-const url = process.env.CONNECTION_URL;
-
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const noteSchema = new mongoose.Schema({
   content: String,
   date: Date,
   important: Boolean,
-});
+})
 
-const Note = mongoose.model('Note', noteSchema);
+const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note({
   content: 'HTML is Easy',
   date: new Date(),
   important: true,
-});
+})
 
 /* note.save().then(result => {
   console.log('note saved!')
@@ -27,10 +26,10 @@ const note = new Note({
 }); */
 
 Note.find({})
-.then(result => {
-	result.forEach(note => {
-	  console.log(note);
-	});
-	mongoose.connection.close();
-})
-.catch(err => {console.error(err)});
+  .then(result => {
+    result.forEach(note => {
+      info(note)
+    })
+    mongoose.connection.close()
+  })
+  .catch(err => {error(err)})
