@@ -1,10 +1,17 @@
 const app = require('./app')
-const http = require('http')
 const { info } = require('./utils/logger')
-const { PORT } = require('./utils/config')
+const { PORT, url } = require('./utils/config')
+const connectToDatabase = require('./mongo')
 
-const server = http.createServer(app)
+info('connecting to', url)
 
-server.listen(PORT, () => {
-  info(`Server running on port ${PORT}`)
-})
+// Connect to the MongoDB database
+connectToDatabase()
+  .then(() => {
+    app.listen(PORT, () => {
+      info(`Server running on port ${PORT}`)
+    })
+  })
+  .catch((err) => {
+    console.error('Failed to connect to MongoDB', err)
+  })

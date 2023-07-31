@@ -1,35 +1,19 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
-const { info, error } = require('./utils/logger')
+const dotenv = require('dotenv')
 
-const url = process.env.CONNECTION_URL
+dotenv.config()
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
-})
-
-const Note = mongoose.model('Note', noteSchema)
-
-const note = new Note({
-  content: 'HTML is Easy',
-  date: new Date(),
-  important: true,
-})
-
-/* note.save().then(result => {
-  console.log('note saved!')
-  mongoose.connection.close();
-}); */
-
-Note.find({})
-  .then(result => {
-    result.forEach(note => {
-      info(note)
+const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'notes-app',
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     })
-    mongoose.connection.close()
-  })
-  .catch(err => {error(err)})
+    console.log('Connected to MongoDB')
+  } catch (err) {
+    console.error('Failed to connect to MongoDB', err)
+  }
+}
+
+module.exports = connectToDatabase
